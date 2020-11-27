@@ -1,0 +1,13 @@
+---
+- hosts: container_with_cert
+  gather_facts: no
+  connection: local
+
+  vars:
+    certificate: ./files/ssl/cert_in_image.pem
+
+  tasks:
+    - name: Test update certificate with backup.
+      smpcert:
+        certificate: '{{certificate}}'
+        backup: /tmp
