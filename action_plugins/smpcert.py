@@ -52,7 +52,11 @@ class SftpSession():
   def read_file_bytes(self, path) -> (bytes, str):
     try: 
       with self.sftpclient.open(path, "rb") as sftp_file:
-        return (sftp_file.read(), "")
+        bytesRead = bytes()
+        buffer = bytes()
+        while (buffer := sftp_file.read()) != b"":
+          bytesRead = bytesRead + buffer
+        return (bytesRead, "")
     except Exception as e:
       return (None, repr(e))
 
@@ -91,7 +95,11 @@ def compare_md5(file1, file2) -> bool:
 def read_file_bytes(path) -> (bytes, str):
   try:
     with open(path, "rb") as fh:
-      return (fh.read(), "")
+      bytesRead = bytes()
+      buffer = bytes()
+      while (buffer := fh.read()) != b"":
+        bytesRead = bytesRead + buffer
+      return (bytesRead, "")
   except Exception as e:
     return (None, repr(e))
 
